@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+   <!-- incluindo css -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <script>
+
+       function mudaTab(nome) {
+
+            if (nome == "usuario") {
+
+                document.getElementById("tabUsuario").classList.add("active");
+                document.getElementById("tabEndereco").classList.remove("active");
+                document.getElementById("tabDocumento").classList.remove("active");
+                document.getElementById('form1').style.display = 'block';
+                document.getElementById('form2').style.display = 'none';
+                document.getElementById('form3').style.display = 'none';
+
+            }
+
+            if (nome == "endereco") {
+
+                document.getElementById("tabEndereco").classList.add("active");
+                document.getElementById("tabUsuario").classList.remove("active");
+                document.getElementById("tabDocumento").classList.remove("active");
+                document.getElementById('form1').style.display = 'none';
+                document.getElementById('form3').style.display = 'none';
+                document.getElementById('form2').style.display = 'block';
+            }  
+            if (nome == "documento") {
+
+                document.getElementById("tabDocumento").classList.add("active");
+                document.getElementById("tabUsuario").classList.remove("active");
+                document.getElementById("tabEndereco").classList.remove("active");
+                document.getElementById('form2').style.display = 'none';
+                document.getElementById('form3').style.display = 'block';
+                document.getElementById('form1').style.display = 'none';
+
+            }
+
+        }   
+
+        function mudaTipoPessoa() {
+
+            var divContent = $('#divRazaoSocial');
+
+            if (document.getElementById('tipo').value == 'J') {
+                $('<label for="titulo" id="labelRS">Razão Social:</label><input type="text" class="form-control" id="razao_social" name="razao_social">').appendTo(divContent);
+            } else {
+                $('#labelRS').remove();
+                $('#razao_social').remove();
+            }
+        }
+   
+    function encodeImageFotoFileAsURL() {
+
+        var filesSelected = document.getElementById("foto").files;
+        if (filesSelected.length > 0) {
+            var fileToLoad = filesSelected[0];
+
+            var fileReader = new FileReader();
+            
+            fileReader.onload = function(fileLoadedEvent) {
+                var srcData = fileLoadedEvent.target.result; // <--- data: base64
+               
+                document.getElementById("imgCapFoto").src = srcData;
+
+                var data = {
+                    foto:srcData,
+                    cpf_cliente:document.getElementById("cpf").value
+                };
+
+                $.ajax({
+						url: '/uploadfoto',
+						method: "post",
+						data:data,
+						success: function(result){
+                            console.log(result.foto);
+                            
+                            document.getElementById("uploadFoto").value = result.foto_id;
+						}
+				});
+            }
+            fileReader.readAsDataURL(fileToLoad);
+
+        }
+    }
+
+
+    function encodeImageDocFileAsURL() {
+
+        var filesSelected = document.getElementById("doc").files;
+
+
+        
+        if (filesSelected.length > 0) {
+            var fileToLoad = filesSelected[0];
+
+            var fileReader = new FileReader();
+            
+            fileReader.onload = function(fileLoadedEvent) {
+                var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                document.getElementById("imgCapDoc").src = srcData;
+
+                var data = {
+                    foto:srcData,
+                    cpf_cliente:document.getElementById("cpf").value
+                };
+
+                $.ajax({
+						url: '/uploadcocumento',
+						method: "post",
+						data:data,
+						success: function(result){
+                            console.log(result.documento_id);
+                            
+                            document.getElementById("uploadDoc").value = result.documento_id;
+
+						}
+				});
+            }
+            fileReader.readAsDataURL(fileToLoad);
+
+        }
+    }
+
+
+</script>
+    
+    
+    	<link rel="shortcut icon" href="images/icone.png" />
+
+   
+    <title>FastBank</title>
+  </head>
+  <body>
+	<nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">               
+                <img src="images/logo-200.jpg" />
+            </div>
+
+        </div>
+    </nav>
+    <div class="container">
+        
+
+        <ul class="nav nav-tabs" style="margin-top:20px;">
+            <li class="nav-item">
+              <a class="nav-link active" href="#" id="tabUsuario" onclick="mudaTab('usuario')">Usuário</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="tabEndereco" href="#" onclick="mudaTab('endereco')">Endereço</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tabDocumento" href="#" onclick="mudaTab('documento')">Documentos</a>
+            </li>
+        </ul>
+
+        <div class="banco_wrapper">
+            <div class="col-md-12 formCadastro" style="margin-top:20px;">
+        
+                <% if(validacao.length > 0) { %>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger">
+                                <strong>Atenção!</strong>
+                                <ul>
+                                    <% for(var i = 0; i < validacao.length; i++) { %>
+                                        <li><%= validacao[i].msg %></li>
+                                    <% } %>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+
+            
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="/cadastrar" method="post">       
+                            <div id="form1">
+                                    <div class="form-group">
+                                        <label for="pwd">Tipo:</label>
+                                        <select class="form-control" id="tipo" name="tipo" onchange="mudaTipoPessoa()">
+                                            <option value="F">Pessoa Física</option>
+                                            <option value="J">Pessoa Jurídica</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group" id="divRazaoSocial"></div>
+
+                                    <div class="form-group">
+                                        <label for="titulo">Nome Completo:</label>
+                                        <input type="text" class="form-control" id="nome" name="nome">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="titulo">E-mail:</label>
+                                        <input type="text" class="form-control" id="email" name="email">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="titulo">Telefone:</label>
+                                        <input type="text" class="form-control" id="telefone" name="telefone">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="pwd">RG/CNPJ:</label>
+                                        <input type="text" class="form-control" id="rg" name="rg">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="pwd">Data de Nascimento:</label>
+                                        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento">
+                                    </div>
+
+                                    
+                            
+                                    <div class="form-group">
+                                        <label for="pwd">CPF:</label>
+                                        <input type="text" class="form-control" id="cpf" name="cpf">
+                                    </div>
+                                    <button type="button" class="btn btn-primary btn-md  bnt-rigth" onclick="mudaTab('endereco')">Próximo</button>
+                            </div>
+
+                            <div id="form2" style="display: none;">
+                                        <div class="form-group">
+                                            <label for="pwd">Estado:</label>
+                                            <select class="form-control" id="uf" name="uf">
+                                                <option value="" selected>--</option>
+                                                <% for(var i = 0; i < ufs.length; i++) { %>
+                                                    <option value="<%= ufs[i].id %>"><%= ufs[i].id %></option>
+                                                <% } %>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="titulo">CEP:</label>
+                                            <input type="text" class="form-control" id="cep" name="cep">
+                                        </div>
+
+                                         <div class="form-group">
+                                            <label for="pwd">Cidade:</label>
+                                            <input type="text" class="form-control" id="cidade" name="cidade">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="pwd">Bairro:</label>
+                                            <input type="text" class="form-control" id="bairro" name="bairro">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="titulo">Endereço:</label>
+                                            <input type="text" class="form-control" id="endereco" name="endereco">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="titulo">Número:</label>
+                                            <input type="text" class="form-control" id="numero" name="numero">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="pwd">Complemento:</label>
+                                            <input type="text" class="form-control" id="complemento" name="complemento">
+                                        </div>
+
+                                    <button type="button" class="btn btn-md btn-primary bnt-rigth" onclick="mudaTab('documento')">Próximo</button>   
+                            </div>
+                            <div id="form3" style="display: none;">
+                               
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="pwd"><b>&bull; Foto do Usuário: </b></label>
+                                            <br>
+                                            <input type="file" name="foto" class="form-control-file" id="foto" onchange="encodeImageFotoFileAsURL();"><br>
+
+                                            <div class="card" style="width: 18rem;">
+                                                <img class="card-img-top" src="images/download.svg" id="imgCapFoto" alt="Card image cap">
+                                                <div class="card-body">
+                                                  <p class="card-text">Descrição: Foto do rosto. Foto com fundo branco. 
+                                                      Postura adequada. Não pondendo cobrir o rosto com óculos, cabelo entre outros. 
+                                                  </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="pwd"><b>&bull; Documento com foto:</b></label>
+                                            <br>
+                                            <input type="file" name="doc" class="form-control-file" id="doc" onchange="encodeImageDocFileAsURL();"><br>
+                                        </div>
+                                        <div class="card" style="width: 18rem;">
+                                            <img class="card-img-top" src="images/download.svg" id="imgCapDoc" alt="Card image cap">
+                                            <div class="card-body">
+                                              <p class="card-text">Descrição: Foto de documento do Identificação legível.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                                               
+                                <input type="text" name="uploadFoto" id="uploadFoto" style="display: none;"><br>
+                                <input type="text" name="uploadDoc" id="uploadDoc" style="display: none;"><br>
+                                
+                                <button type="submit" class="btn btn-md btn-primary btn-login">Cadastrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+
+        
+
+      <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+</html>

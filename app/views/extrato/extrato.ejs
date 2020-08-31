@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<title>FastBank</title>
+		
+		<!-- JQuery -->
+		<script src="js/jquery-2.2.1.js"></script>
+
+		<!-- bootstrap - link cdn -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	
+		<!-- incluindo css -->
+		<link href="css/style.css" rel="stylesheet">
+
+		<!-- favicon -->
+		<link rel="shortcut icon" href="images/icone.png" />
+	</head>
+
+	<body>
+
+		<script>
+
+					document.getElementById('tudo').style.display = 'block';
+					document.getElementById('entrada').style.display = 'none';
+					document.getElementById('saida').style.display = 'none';
+       
+			function mudaTab(nome) {
+	 
+				 if (nome == "tudo") {
+	 
+					 document.getElementById("tabTudo").classList.add("active");
+					 document.getElementById("tabEntrada").classList.remove("active");
+					 document.getElementById("tabSaida").classList.remove("active");
+
+					 document.getElementById('tudo').style.display = 'block';
+					 document.getElementById('entrada').style.display = 'none';
+					 document.getElementById('saida').style.display = 'none';
+				 } 
+				if (nome == "entrada"){
+	 
+					document.getElementById("tabEntrada").classList.add("active");
+					 document.getElementById("tabTudo").classList.remove("active");
+					 document.getElementById("tabSaida").classList.remove("active");
+
+					 document.getElementById('entrada').style.display = 'block';
+					 document.getElementById('tudo').style.display = 'none';
+					 document.getElementById('saida').style.display = 'none';
+				}
+
+				if (nome == "saida"){
+	 
+					document.getElementById("tabSaida").classList.add("active");
+					 document.getElementById("tabTudo").classList.remove("active");
+					 document.getElementById("tabEntrada").classList.remove("active");
+
+					 document.getElementById('saida').style.display = 'block';
+					 document.getElementById('tudo').style.display = 'none';
+					 document.getElementById('entrada').style.display = 'none';
+				}
+				
+			 }   
+			 
+		 </script>
+		 
+		<nav class="navbar navbar-default navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">			
+					<a href="/home"><img src="images/logo-200.jpg"/></a>  
+				</div>
+			</div>
+		</nav>
+
+		<nav class="navbar navbar-default navbar-static-top navbar-align">
+			<div class="container-fluid">
+			  <div class="navbar-header nav-align">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-8" aria-expanded="false">
+				  <span class="sr-only">Toggle navigation</span>
+				  <span class="icon-bar"></span>
+				  <span class="icon-bar"></span>
+				  <span class="icon-bar"></span>
+				</button>
+				<div class="navbar-brand">Extrato</div>
+			  </div>
+	  
+			  <!-- Collect the nav links, forms, and other content for toggling -->
+			  <div class="collapse navbar-collapse nav-align" id="bs-example-navbar-collapse-8">
+					<ul class="nav navbar-nav">
+				  		<li class="active" id='tabTudo' onclick="mudaTab('tudo')"><a href="#">Tudo</a></li>
+				  		<li class="" id="tabEntrada" onclick="mudaTab('entrada')"><a href="#" >Entrada</a></li>
+				  		<li class="" id="tabSaida" onclick="mudaTab('saida')"><a href="#">Saída</a></li>
+				  	</ul>
+				  <ul class="nav navbar-nav navbar-right alinhamentovoltar">
+					<li><a href="/home"><b>Voltar ao menu inicial</b></a></li>
+				</ul>
+			  </div>
+			</div>
+		  </nav>
+	    <div class="container" id="tudo">
+
+			<% 
+				function formatReal( n )
+				{
+					if (n == 0 || n == null) {
+
+						return "R$ 0,0";
+					}
+					else {
+						var tmp =  "R$ " + n.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+\,)/g, "$1.");
+						return tmp;
+					}	
+				}
+
+				function dataFormatada(data){
+					var data = new Date(data),
+						dia  = data.getDate().toString().padStart(2, '0'),
+						mes  = (data.getMonth()+1).toString().padStart(2, '0'),
+						ano  = data.getFullYear()
+						hora = data.getHours().toString().padStart(2, '0'),
+						minute = data.getMinutes().toString().padStart(2, '0');
+					return dia+"/"+mes+"/"+ano+" "+hora+":"+minute;
+					
+				}
+			%>
+
+			<div class="row">
+	    		<div class="col-md-12">
+	    			<div class="banco_wrapper">
+		    			<span class="banco_autor"><h4>Saldo Total em Conta
+							<% if(usuario.digito == 1) {%>
+								Corrente
+							<% } %>
+							<% if(usuario.digito == 0) {%>
+								Poupança
+							<% } %>
+						</h4></span>
+		    			<a href="" class="banco_titulo">
+							<% var valorTotalTudo = 0 %>
+							<% for(var i = 0; i <  total.length; i++) { %>
+								<% valorTotalTudo += total[i].valor %>
+							<% } %>	
+							<%= formatReal(valorTotalTudo) %></a>
+		    		</div>
+		    	</div>
+			</div>
+
+			<% for(var i = 0; i <  total.length; i++) { %>
+	    	<div class="row">
+	    		<div class="col-md-12">
+					<div class="banco_wrapper">
+		    			<span class="banco_autor"><%= total[i].nome %></span>
+						<span class="banco_data">
+							<%= dataFormatada(total[i].dt_transacao) %></span>
+		    			<br />
+		    			<p class="banco_resumo">
+		    				<%= formatReal(total[i].valor) %>
+						</p>
+						<p class="banco_resumo">
+		    				<%= total[i].descricao %>
+		    			</p>
+		    		</div>
+		    	</div>
+			</div>
+			<% } %>
+			
+		</div>
+		
+		<div class="container" id="entrada" style="display: none;">
+
+			<div class="row">
+	    		<div class="col-md-12">
+	    			<div class="banco_wrapper">
+		    			<span class="banco_autor"><h4>Valor Total de Entrada</h4></span>
+		    			<a href="" class="banco_titulo">R$
+							<% var valorTotalEntrada = 0 %>
+							<% for(var i = 0; i <  entradas.length; i++) { %>
+								<% valorTotalEntrada += entradas[i].valor %>
+							<% } %>	
+							<%= formatReal(valorTotalEntrada) %></a>
+		    		</div>
+		    	</div>
+			</div>
+
+
+			<% for(var i = 0; i <  entradas.length; i++) { %>
+	    	<div class="row">
+	    		<div class="col-md-12">
+					<div class="banco_wrapper">
+		    			<span class="banco_autor"><%= entradas[i].nome %></span>
+						<span class="banco_data"><%= 
+							dataFormatada(entradas[i].dt_transacao) %></span>
+		    			<br />
+		    			<p class="banco_resumo">
+		    				<%= formatReal(entradas[i].valor) %>
+						</p>
+						<p class="banco_resumo">
+		    				<%= entradas[i].descricao %>
+		    			</p>
+		    		</div>
+		    	</div>
+			</div>
+			<% } %>
+			
+		</div>
+		
+		<div class="container" id="saida" style="display: none;">
+
+			<div class="row">
+	    		<div class="col-md-12">
+	    			<div class="banco_wrapper">
+		    			<span class="banco_autor"><h4>Valor Total de Saída</h4></span>
+		    			<a href="" class="banco_titulo">
+							<% var valorTotalSaida = 0 %>
+							<% for(var i = 0; i <  saidas.length; i++) { %>
+								<% valorTotalSaida += saidas[i].valor %>
+							<% } %>	
+							<%= formatReal(valorTotalSaida) %></a>
+		    		</div>
+		    	</div>
+			</div>
+
+
+			<% for(var i = 0; i <  saidas.length; i++) { %>
+	    	<div class="row">
+	    		<div class="col-md-12">
+					<div class="banco_wrapper">
+		    			<span class="banco_autor"><%= saidas[i].nome %></span>
+						<span class="banco_data">
+							<%= dataFormatada(saidas[i].dt_transacao) %>
+						</span>
+		    			<br />
+		    			<p class="banco_resumo">
+		    				<%= formatReal(saidas[i].valor) %>
+						</p>
+						<p class="banco_resumo">
+		    				<%= saidas[i].descricao %>
+		    			</p>
+		    		</div>
+		    	</div>
+			</div>
+			<% } %>
+			
+	    </div>
+	
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
+	</body>
+</html>

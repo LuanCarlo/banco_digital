@@ -1,0 +1,139 @@
+<div>
+    <div class="col-md-12 card_transferencia">
+
+        <% if(validacoes.length > 0) { %>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <strong>Atenção!</strong>
+                        <ul>
+                            <% for(var i = 0; i < validacoes.length; i++) { %>
+                                <li><%= validacoes[i].msg %></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+
+        <script>
+            
+				function mostraCampo() {
+
+                    if ($('#tipotransferencia').val() == 'P') {
+
+                        var data = 
+                        '<div id="divRemocao">'+
+                            '<label for="pwd">Instituição:</label>'+
+                            '<select class="form-control" id="instituicao" name="instituicao">'+
+                                '<option value="" selected>--</option>'+
+                                '<% for(var i = 0; i < bancos.length; i++) { %>'+
+                                    '<option value="<%= bancos[i].codigo %>"><%= bancos[i].nome %></option>'+
+                                '<% } %>'+
+                            '</select>'+
+                        '</div>';
+                        $('#divInstituicao').html(data);
+                    } else {
+                        $("#divRemocao").remove();
+                    }                    
+                }
+                
+                function transferir() {
+
+                    var data = {};
+                    
+                    data.tipotransferencia = 'TED';
+                    data.tipotitularidade = $('#tipotitularidade').val();
+                    data.tipo = $('#tipo').val();
+                    data.agencia = $('#agencia').val();
+                    data.conta = $('#conta').val();
+                    data.digito = $('#digito').val();
+                    data.nome = $('#nome').val();
+                    data.cpf = $('#cpf').val();
+                    data.valor = $('#valor').val();
+
+                    if (data.tipotitularidade == 'P') {
+                        data.instituicao = $('#instituicao').val();
+                    } else {
+                        data.instituicao = '777';
+                    }
+
+                    $.ajax({
+						url: 'transferencia/transferir',
+                        method: "post",
+                        data:data,
+						success: function(result){
+                            alert("Transferência realizada com sucesso!");
+                            history.go(-1);
+						}
+					});               
+                }
+
+                
+        </script>
+
+    
+        <div class="row">
+            <div class="col-md-12">
+                <form action="/cadastro/cadastrar" method="post">       
+                
+                            <div class="form-group">
+                                <label for="pwd">Opção de Transferência:</label>
+                                <select class="form-control" id="tipotitularidade" name="tipotransferencia" 
+                                onchange="mostraCampo()">
+                                    <option value="" selected>--</option>
+                                    <option value="M">Mesma Titularidade</option>
+                                    <option value="P">Para outros Bancos</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="divInstituicao">
+                                
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pwd">Tipo pessoa:</label>
+                                <select class="form-control" id="tipo" name="tipo">
+                                    <option value="F">Pessoa Física</option>
+                                    <option value="J">Pessoa Jurídica</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="titulo">Agência:</label>
+                                <input type="text" class="form-control" id="agencia" name="agencia">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="titulo">Conta:</label>
+                                <input type="text" class="form-control" id="conta" name="conta">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pwd">Operação:</label>
+                                <select class="form-control" id="tipo" name="tipo">
+                                    <option value="">--</option>
+                                    <option value="0">Poupança</option>
+                                    <option value="1">Conta Corrente</option>
+                                </select>
+                            </div> 
+
+                            <div class="form-group">
+                                <label for="titulo">Nome Completo:</label>
+                                <input type="text" class="form-control" id="nome" name="nome">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="titulo">CPF:</label>
+                                <input type="text" class="form-control" id="cpf" name="cpf">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="titulo">Valor:</label>
+                                <input type="text" class="form-control" id="valor" name="valor">
+                            </div>                                            
+                            <button type="button" class="btn btn-lg pull-right btn-primary" onclick="transferir()">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>    

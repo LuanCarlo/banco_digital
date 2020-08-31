@@ -1,0 +1,111 @@
+
+	<script src="js/jquery-2.2.1.js"></script>
+	<script>
+
+		$('#fotoCliente').focus();
+
+		$(document).ready( function(){
+			
+		});
+	
+		function aprovar(clienteId) {
+			 
+			$.ajax({
+							url: 'cliente/atualizar',
+							method: "post",
+							data:{id:clienteId,ativo:1},
+							success: function(data){
+								alert('Conta aprovada com sucesso!');
+								$.ajax({
+									url: '/clientes',
+									method: "get",
+									success: function(data){
+										$('#corpo').html(data);
+									}
+								});
+							}
+			});
+		}
+
+		function bloquear(clienteId) {
+			 
+			 $.ajax({
+							 url: 'cliente/atualizar',
+							 method: "post",
+							 data:{id:clienteId, ativo:0},
+							 success: function(data){
+								 alert('Conta bloqueada com sucesso!');
+								 $.ajax({
+									 url: '/clientes',
+									 method: "get",
+									 success: function(data){
+										 $('#corpo').html(data);
+									 }
+								 });
+							 }
+			});
+		}
+ 
+
+		function cancelar() {
+			$('#visualizaCliente').html("");
+		}
+	</script>
+
+	<div class="jumbotron" style="background-color: white;">
+		<h3><%= cliente.nome %></h3>
+		<p><%= cliente.email %></p>
+		<div class="row">
+			<div class="col-xs-6 col-md-3" id="fotoCliente">
+			  <a href="#" class="thumbnail">
+				<img src="<%= cliente.foto %>">
+			  </a>
+			</div>
+			<div class="col-xs-6 col-md-3">
+				<a href="#" class="thumbnail">
+				  <img src="<%= cliente.documento %>">
+				</a>
+			  </div>
+			<div class="banco_resumo">
+				<b>Agência:</b> <%= cliente.agencia %> <b>Conta:</b> <%= cliente.conta %>
+			</div>
+
+			<br>
+			<% for(var i = 0; i <  cliente.cartoes.length; i++) { %>
+
+				Cartão de 
+					<% if (cliente.cartoes[i].tipo == 'C') { %>
+						Crédito: 
+					<% } %>
+
+					<% if (cliente.cartoes[i].tipo == 'D') { %>
+						Débito: 
+					<% } %>
+				
+				
+					<%= cliente.cartoes[i].numero %>
+				
+					<% if (cliente.cartoes[i].ativo == '1') { %>
+						<b>Ativo</b>
+					<% } %>
+
+					<% if (cliente.cartoes[i].ativo == '0') { %>
+						<b>Bloqueado</b>
+					<% } %>
+					<br>
+					<br>
+			<% } %>
+		  </div>
+		<p>
+			<% if (cliente.ativo == '1') { %>
+				<a class="btn btn-primary btn-lg" href="#" role="button" onclick="bloquear('<%= cliente.id %>')">Bloquear</a>
+			<% } %>
+
+			<% if (cliente.ativo == '0') { %>
+				<a class="btn btn-primary btn-lg" href="#" role="button" onclick="aprovar('<%= cliente.id %>')">Aprovar</a>
+			<% } %>
+			
+			<a class="btn btn-danger btn-lg" href="#" role="button" onclick="cancelar()">Cancelar</a>
+		</p>
+
+	  </div>

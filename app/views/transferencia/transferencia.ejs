@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<title>FastBank</title>
+		
+		<!-- JQuery -->
+		<script src="js/jquery-2.2.1.js"></script>
+
+		<!-- bootstrap - link cdn -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	
+		<!-- incluindo css -->
+		<link href="css/style.css" rel="stylesheet">
+
+		<!-- favicon -->
+		<link rel="shortcut icon" href="images/icone.png" />
+
+
+		<script>
+			$(document).ready( function(){
+
+				function tabInicial() {
+					document.getElementById("tabTed").classList.add("active");
+					document.getElementById("tabDoc").classList.remove("active");
+
+					$.ajax({
+						url: '/ted',
+						method: "get",
+						success: function(data){
+							$('#divConteudo').html(data);
+						}
+					});
+				}
+
+				tabInicial();
+
+				$('#tabTed').click(function(){
+
+					document.getElementById("tabTed").classList.add("active");
+					document.getElementById("tabDoc").classList.remove("active");
+
+					$.ajax({
+						url: '/ted',
+						method: "get",
+						success: function(data){
+							$('#divConteudo').html(data);
+						}
+					});
+				});
+
+				$('#tabDoc').click(function(){
+
+					document.getElementById("tabDoc").classList.add("active");
+					document.getElementById("tabTed").classList.remove("active");
+
+					$.ajax({
+						url: '/doc',
+						method: "get",
+						success: function(data){
+							$('#divConteudo').html(data);
+						}
+					});
+				});
+
+			});
+		</script>
+
+	</head>
+
+	<body>
+
+		<nav class="navbar navbar-default navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">			
+					<a href="/home"><img src="images/logo-200.jpg"/></a>  
+				</div>
+			</div>
+		</nav>
+
+		<nav class="navbar navbar-default navbar-static-top navbar-align">
+			<div class="container-fluid">
+			  <div class="navbar-header nav-align">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-8" aria-expanded="false">
+				  <span class="sr-only">Toggle navigation</span>
+				  <span class="icon-bar"></span>
+				  <span class="icon-bar"></span>
+				  <span class="icon-bar"></span>
+				</button>
+				<div class="navbar-brand">Transferência</div>
+			  </div>
+	  
+			  <!-- Collect the nav links, forms, and other content for toggling -->
+			  <div class="collapse navbar-collapse nav-align" id="bs-example-navbar-collapse-8">
+					<ul class="nav navbar-nav">
+						<li class="active" id='tabTed'><a href="#">TED</a></li>
+						<li class="" id="tabDoc"><a href="#" >DOC</a></li>
+				  	</ul>
+				  <ul class="nav navbar-nav navbar-right alinhamentovoltar">
+					<li><a href="/home"><b>Voltar ao menu inicial</b></a></li>
+				</ul>
+			  </div>
+			</div>
+		  </nav>
+		  
+		  <div class="container">
+			<div id="divConteudo">
+			</div>
+		  </div>
+		  
+	
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
+	</body>
+</html>

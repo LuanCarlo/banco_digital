@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<title>FastBank</title>
+		
+		<!-- JQuery -->
+		<script src="js/jquery-2.2.1.js"></script>
+
+		<!-- bootstrap - link cdn -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	
+		<!-- incluindo css -->
+		<link href="css/style.css" rel="stylesheet">
+
+		<!-- favicon -->
+		<link rel="shortcut icon" href="images/icone.png" />
+
+		
+		<script>
+			$(document).ready( function(){
+
+				$('#navCliente').click(function(){
+
+					document.getElementById("navCliente").classList.add("active");
+					document.getElementById("navInicio").classList.remove("active");
+
+					$.ajax({
+						url: '/clientes',
+						method: "get",
+						success: function(data){
+							$('#corpo').html(data);
+						}
+					});
+				});
+
+				$('#navInicio').click(function(){
+
+					document.getElementById("navCliente").classList.remove("active");
+					document.getElementById("navInicio").classList.add("active");
+						
+					$('#corpo').html("");
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-default navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">               
+					<img src="images/logo-200.jpg" />
+				</div>
+	
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li><a style="color: #000000;"><b>Administrativo</b></a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<nav class="navbar navbar-default navbar-align">
+			<div class="container-fluid">
+			  <!-- Brand and toggle get grouped for better mobile display -->
+			  <div class="navbar-header nav-align">
+				<button type="button" class="navbar-toggle collapsed " data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				  <span class="sr-only">Toggle navigation</span>
+				  <span class="icon-bar"></span>
+				  <span class="icon-bar"></span>
+				  <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand " style="color: #d67d09;">Olá, <%= usuario.nome %>!</a>
+				<a class="navbar-brand active" href="#" id="navInicio">Início</a>
+			  </div>
+		  
+			  <!-- Collect the nav links, forms, and other content for toggling -->
+			  <div class="collapse navbar-collapse nav-align" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+				  	<li class="">
+					  <a href="#" id="navCliente">Clientes <span class="sr-only">(current)</span></a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/logout"><b>Sair</b></a></li>
+				</ul>
+			  </div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		  </nav>
+
+		  <div id="corpo"></div>
+	
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
+	</body>
+</html>

@@ -1,0 +1,86 @@
+
+<script src="js/jquery-2.2.1.js"></script>
+<script>
+	$(document).ready( function(){
+		
+	});
+
+	function visualizaCliente(clienteId) {
+
+		$('.load').css('display', 'block');
+		$('html,body').scrollTop(0);
+		$('#corpo2').html('');
+
+		var url = 'cliente?id='+clienteId;
+		console.log(url);
+		 
+		$.ajax({
+						url: url,
+						method: "get",
+						success: function(data){
+							$('#visualizaCliente').html(data);
+							$('#visualizaCliente').focus();
+							$('.load').css('display', 'none');
+						}
+		});
+	}
+</script>
+
+
+<style>
+    .load {
+		width: 100px;
+		height: 100px;
+		position: absolute;
+		top: 11%;
+		left: 45%;
+		color: blue;
+		z-index: 10;
+ 	}
+</style>
+
+		<div class="container">
+
+		
+			<div class="load" style="display: none;"> 
+				<img src="images/load.gif" style="width: 100px; height: 100px;" />
+			</div>
+
+			<div id="visualizaCliente"></div>
+
+			<% for(var i = 0; i <  clientes.length; i++) { %>
+	    	<div class="row">
+	    		<div class="col-md-12">
+					<div class="banco_wrapper">
+		    			<span class="banco_autor">
+							<a onclick="visualizaCliente('<%= clientes[i].id %>')"><%= clientes[i].nome %></a>
+						</span>
+						<span class="banco_data"><%= clientes[i].email %></span>
+		    			<br />
+		    			<p class="banco_resumo">
+							<% if (clientes[i].tipo == 'J') { %>
+								CNPJ: 
+							<% } %>
+							<% if (clientes[i].tipo == 'P' || clientes[i].tipo == '0452' ){ %>
+								CPF: 
+							<% } %>
+		    				<%= clientes[i].cpf %>
+						</p>
+						<p class="banco_resumo">
+							<% if (clientes[i].ativo == '1') { %>
+								<p>Ativo</p>
+							<% } %>
+
+							<% if (clientes[i].ativo == '0') { %>
+								<p>Inativo</p>
+							<% } %>
+						</p>
+		    		</div>
+		    	</div>
+			</div>
+			<% } %>
+		</div>	
+
+		<div id="corpo2">
+
+		</div>
