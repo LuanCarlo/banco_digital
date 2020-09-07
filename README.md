@@ -1,6 +1,6 @@
-<div>
-    <img src="app/public/images/logo.jpg" width="300px" style="margin-left:33%;"/>
-</div>
+<p align="center"> 
+  <img src="app/public/images/logo.jpg" width="300px" style="margin-left:300px;"/>
+</p>
 
 <h2 align="center">
  :bank:  FastBank  :bank:
