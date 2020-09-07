@@ -70,7 +70,7 @@ $ git clone https://github.com/LuanCarlo/banco_digital.git
   <img alt="Email - Luan Carlo" src="https://img.shields.io/badge/Email--%23F8952D?style=social&logo=gmail">
 </a> 
 
-## Licença
+## :page_facing_up: Licença
 
 Copyright (c) 2020 Luan Carlo Santos de Paulo
 
