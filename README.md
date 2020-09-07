@@ -1,5 +1,5 @@
-<div align="center">
-    <img src="https://drive.google.com/file/d/1kiBj5ZqMC7H4FvR07LHr7EAz5CmupBUm/view?usp=sharing" width="300px" />
+<div>
+    <img src="app/public/images/logo.jpg" width="300px" style="margin-left:33%;"/>
 </div>
 
 <h2 align="center">
