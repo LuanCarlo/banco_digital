@@ -16,9 +16,9 @@
 
 ## :computer: Projeto 
 
-FastBank é um projeto criado para o Trabalho de Conclusão de Curso da Pós Graduação. Para aprimorar o conhecimento colocando em prática e melhorando habilidades de desenvolvimento, desiging e análise de Sistema. 
+FastBank é um projeto criado para o Trabalho de Conclusão de Curso da Pós Graduação Engenharia de Software. Com o intuito de aprimorar o conhecimento colocando em prática e melhorando principalmente as habilidades de desenvolvimento, designing e análise de Sistema. 
 
-Este é um projeto simples de um Banco digital com funcionalidades básicas como cadastro, login, acompanhamento de contas corrente e poupança, transferência e uma área administrativa para controle e avaliação de usuários.
+Este é um projeto simples de um Banco digital. Com funcionalidades básicas como cadastro, login, acompanhamento das contas corrente e poupança, transferência. Há uma área administrativa para controle e avaliação de usuários.
 
 
 ## :rocket: Criado com
