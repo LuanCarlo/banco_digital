@@ -18,7 +18,7 @@
 
 FastBank é um projeto criado para o Trabalho de Conclusão de Curso da Pós Graduação da PUC Minas: Engenharia de Software. O intuito é aprimorar o conhecimento colocando-o em prática. Além disso, melhorar principalmente as habilidades de desenvolvimento, design e análise de sistema. 
 
-Consiste em um projeto simples de um Banco digital, com funcionalidades básicas como cadastro, login, acompanhamento das contas corrente e poupança e transferência. Há também uma área administrativa para o controle e avaliação de usuários.
+Consiste em um projeto simples de um Banco Digital, com funcionalidades básicas como cadastro, login, acompanhamento das contas corrente e poupança e transferência. Há também uma área administrativa para o controle e avaliação de usuários.
 
 
 ## :rocket: Criado com
